@@ -24,6 +24,7 @@ public class Endereco {
         this.complemento = endereco.complemento();
     }
 
+
     public String getLogradouro() {
         return logradouro;
     }

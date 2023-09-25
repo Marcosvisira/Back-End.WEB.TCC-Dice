@@ -19,23 +19,20 @@ public class cadastroEmpresa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Column(name = "nome_fantasia")
     private String nomeFantasia;
     private String cnpj;
     @Embedded
     private Endereco endereco;
 
-    @ManyToMany(mappedBy = "dadosempresa")
-    @JsonManagedReference
-    private List<dadosCadastroEmpresa> empresas;
-
+    public cadastroEmpresa(){}
 
     public cadastroEmpresa(dadosCadastroEmpresa dados) {
-        this.nome = dados.nome();
-        this.nomeFantasia = dados.nomeFantasia();
-        this.cnpj = dados.cnpj();
-        this.endereco = new Endereco(dados.endereco());
-        this.nomeFantasia = dados.nomeFantasia();
-
+        this.nome = dados.getNome();
+        this.nomeFantasia = dados.getNomeFantasia();
+        this.cnpj = dados.getCnpj();
+        this.endereco = dados.getEndereco();
+        this.nomeFantasia = dados.getNomeFantasia();
     }
 
     public Long getId() {

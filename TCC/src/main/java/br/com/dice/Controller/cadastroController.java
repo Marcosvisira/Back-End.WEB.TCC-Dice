@@ -7,15 +7,18 @@ import br.com.dice.Records.dadosCadastroEmpresa;
 import br.com.dice.Repository.empresaRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @RestController
-@RequestMapping("cadastro")
+@RequestMapping("empresa")
 public class cadastroController {
 
     @Autowired
@@ -29,14 +32,22 @@ public class cadastroController {
         var empresa = new cadastroEmpresa(dados);
         repository.save(empresa);
 
-        var uri = uriBuilder.path("/cadastro/{ìd}").buildAndExpand(empresa.getId()).toUri();
+        var uri = uriBuilder.path("/empresa/{id}").buildAndExpand(empresa.getId()).toUri();
         return ResponseEntity.created(uri).body("Empresa Cadastrada!");
     }
 
     @GetMapping
-    public ResponseEntity<Page<dadosListagemEmpresa>> listar(Pageable paginacao){
-        var page =  repository.findAll(paginacao).map(dadosListagemEmpresa::new);
-        return ResponseEntity.ok(page);
+    public ResponseEntity<List<dadosCadastroEmpresa>> listar(){
+        ModelMapper map = new ModelMapper();
+        List<cadastroEmpresa> page = new ArrayList<cadastroEmpresa>();
+        page = repository.findAll();
+        List<dadosCadastroEmpresa> dados = new ArrayList<dadosCadastroEmpresa>();
+        for(cadastroEmpresa cadastro : page){
+            dadosCadastroEmpresa d = new dadosCadastroEmpresa();
+            d = map.map(cadastro, dadosCadastroEmpresa.class);
+            dados.add(d);
+        }
+        return ResponseEntity.ok(dados);
     }
 
     @PutMapping
@@ -44,9 +55,7 @@ public class cadastroController {
     public ResponseEntity atualizar(@RequestBody @Valid dadosEndereco dados) {
         var endereco = repository.getReferenceById(dados.ID());
         endereco.atualizarInformacoes(dados);
-
         return ResponseEntity.ok(dados);
-
     }
     @DeleteMapping("/{ID}")
     @Transactional

@@ -1,16 +1,62 @@
 package br.com.dice.Records;
 
-import jakarta.validation.Valid;
+import br.com.dice.Entity.Endereco;
+import jakarta.persistence.*;
 
 
-public record dadosCadastroEmpresa (String nome,
-
-                                    String nomeFantasia,
+public class dadosCadastroEmpresa {
 
 
-                                    String cnpj,
+    private Long id;
+    private String nome;
+    private String nomeFantasia;
+    private String cnpj;
+    @Embedded
+    private Endereco endereco;
+    public dadosCadastroEmpresa() {
+    }
 
-                                    @Valid
-                                    dadosEndereco endereco){
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNomeFantasia() {
+        return nomeFantasia;
+    }
+
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public Long ID() {
+        return ID();
+    }
 }
