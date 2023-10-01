@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("empresa")
@@ -52,10 +52,15 @@ public class cadastroController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid dadosEndereco dados) {
-        var endereco = repository.getReferenceById(dados.ID());
-        endereco.atualizarInformacoes(dados);
+    public ResponseEntity atualizar(@RequestBody @Valid dadosCadastroEmpresa dados) {
+        cadastroEmpresa empresa = repository.findById(dados.getId()).orElse(new cadastroEmpresa());
+        if (empresa.getId() == null ){
+            return ResponseEntity.notFound().build();
+        }
+        empresa.atualizarInformacoes(dados);
+        repository.save(empresa);
         return ResponseEntity.ok(dados);
+
     }
     @DeleteMapping("/{ID}")
     @Transactional
@@ -63,13 +68,6 @@ public class cadastroController {
         repository.deleteById(ID);
 
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/{ID}")
-    public ResponseEntity detalhar(@PathVariable Long ID){
-        var empresa =  repository.getReferenceById(ID);
-
-        return ResponseEntity.ok(new dadosListagemEmpresa(empresa));
     }
 
 }

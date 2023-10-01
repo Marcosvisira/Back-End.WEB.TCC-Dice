@@ -9,12 +9,12 @@ public class dadosCadastroEmpresa {
 
     private Long id;
     private String nome;
-    private String nomeFantasia;
     private String cnpj;
     @Embedded
     private Endereco endereco;
     public dadosCadastroEmpresa() {
     }
+
 
     public Long getId() {
         return id;
@@ -30,14 +30,6 @@ public class dadosCadastroEmpresa {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getNomeFantasia() {
-        return nomeFantasia;
-    }
-
-    public void setNomeFantasia(String nomeFantasia) {
-        this.nomeFantasia = nomeFantasia;
     }
 
     public String getCnpj() {
@@ -56,7 +48,4 @@ public class dadosCadastroEmpresa {
         this.endereco = endereco;
     }
 
-    public Long ID() {
-        return ID();
-    }
 }

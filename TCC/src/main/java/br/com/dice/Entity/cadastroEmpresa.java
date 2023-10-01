@@ -2,12 +2,11 @@ package br.com.dice.Entity;
 
 import br.com.dice.Records.dadosCadastroEmpresa;
 import br.com.dice.Records.dadosEndereco;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import java.util.List;
+
 
 @Table(name = "dadosempresa")
 @Entity(name = "Empresa")
@@ -19,8 +18,6 @@ public class cadastroEmpresa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    @Column(name = "nome_fantasia")
-    private String nomeFantasia;
     private String cnpj;
     @Embedded
     private Endereco endereco;
@@ -29,10 +26,8 @@ public class cadastroEmpresa {
 
     public cadastroEmpresa(dadosCadastroEmpresa dados) {
         this.nome = dados.getNome();
-        this.nomeFantasia = dados.getNomeFantasia();
         this.cnpj = dados.getCnpj();
         this.endereco = dados.getEndereco();
-        this.nomeFantasia = dados.getNomeFantasia();
     }
 
     public Long getId() {
@@ -45,14 +40,6 @@ public class cadastroEmpresa {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getNomeFantasia() {
-        return nomeFantasia;
-    }
-
-    public void setNomeFantasia(String nomeFantasia) {
-        this.nomeFantasia = nomeFantasia;
     }
 
     public String getCnpj() {
@@ -68,27 +55,28 @@ public class cadastroEmpresa {
         this.endereco = endereco;
     }
 
-    public void atualizarInformacoes(dadosEndereco dados) {
-        if (dados.logradouro() != null) {
-            this.endereco.setLogradouro(dados.logradouro());
-        }
-        if (dados.cidade() != null) {
-            this.endereco.setCidade(dados.cidade());
-        }
-        if (dados.uf() != null) {
-            this.endereco.setUf(dados.cidade());
-        }
-        if (dados.cep() != null) {
-            this.endereco.setCep(dados.cidade());
-        }
-        if (dados.bairro() != null) {
-            this.endereco.setBairro(dados.bairro());
-        }
-        if (dados.numero() != null) {
-            this.endereco.setNumero(dados.numero());
-        }
-        if (dados.complemento() != null) {
-            this.endereco.setComplemento(dados.complemento());
-        }
 
-    }}
+    public void atualizarInformacoes(dadosCadastroEmpresa dados) {
+        this.setNome(dados.getNome());
+        this.setCnpj(dados.getCnpj());
+        this.endereco.setLogradouro(dados.getEndereco().getLogradouro());
+        this.endereco.setCidade(dados.getEndereco().getCidade());
+        this.endereco.setUf(dados.getEndereco().getUf());
+        this.endereco.setCep(dados.getEndereco().getCep());
+        this.endereco.setBairro(dados.getEndereco().getBairro());
+        this.endereco.setNumero(dados.getEndereco().getNumero());
+        this.endereco.setComplemento(dados.getEndereco().getComplemento());
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    }
