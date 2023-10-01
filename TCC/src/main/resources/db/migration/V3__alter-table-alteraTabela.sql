@@ -1,0 +1,1 @@
+alter table dadosempresa drop column nome_fantasia;
