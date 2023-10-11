@@ -21,6 +21,23 @@ public class cadastroEmpresa {
     private String cnpj;
     @Embedded
     private Endereco endereco;
+    @Enumerated(EnumType.STRING)
+    private statusCadastro status;
+
+    public enum statusCadastro {
+        PENDENTE,
+        APROVADO,
+        REJEITADO
+    }
+
+    public statusCadastro getStatus() {
+        return status;
+    }
+
+    public void setStatus(statusCadastro status) {
+        this.status = status;
+    }
+
 
     public cadastroEmpresa(){}
 

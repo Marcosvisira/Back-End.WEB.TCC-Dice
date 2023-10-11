@@ -1,8 +1,10 @@
 package br.com.dice.Usuario;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +13,10 @@ import java.util.Collection;
 import java.util.List;
 
 @Table(name = "usuarios")
-@Entity(name = "Usuario")
+@Entity(name = "usuario")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails {
 
@@ -21,11 +25,19 @@ public class Usuario implements UserDetails {
     private Long id;
     private String login;
     private String senha;
+    private UsuarioRole role;
 
+    public Usuario(String login, String senha, UsuarioRole role){
+        this.login = login;
+        this.senha = senha;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
+                new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package br.com.dice.Infra.FirebaseConfig;
+/*package br.com.dice.Infra.FirebaseConfig;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -12,15 +12,20 @@ import java.io.IOException;
 @Configuration
 public class FirebaseConfig {
 
-    @Bean 
-    public FirebaseApp initializeFirebaseApp() throws IOException {
-        FileInputStream serviceAccount = new FileInputStream("dicetcc-firebase-adminsdk-tycs0-d70eb66e80.json"); // Substitua pelo caminho real
+    @Bean
+    public FirebaseApp firebaseApp() throws IOException {
+        // Carregue as credenciais do Firebase Admin SDK
+        GoogleCredentials credentials = GoogleCredentials.fromStream(
+                getClass().getResourceAsStream("dicetcc-firebase-adminsdk-tycs0-d70eb66e80.json")
+        );
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://dicetcc-default-rtdb.firebaseio.com") // Substitua pela URL do seu projeto Firebase
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(credentials)
                 .build();
 
         return FirebaseApp.initializeApp(options);
     }
-}
+
+
+    }
+*/
