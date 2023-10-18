@@ -5,7 +5,7 @@ import br.com.dice.Infra.security.TokenService;
 import br.com.dice.Repository.UsuarioRepository;
 import br.com.dice.Usuario.DadosAutenticacaoDTO;
 import br.com.dice.Usuario.RegistrarDTO;
-import br.com.dice.Usuario.Usuario;
+import br.com.dice.Entity.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 public class autenticacaoController {
 
     @Autowired
@@ -32,15 +32,18 @@ public class autenticacaoController {
 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid DadosAutenticacaoDTO dados){
-           var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+    public ResponseEntity login(@RequestBody @Valid DadosAutenticacaoDTO dados) {
+        try {
+            var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+            var authentication = authenticationManager.authenticate(authenticationToken);
 
-           var authentication = this.authenticationManager.authenticate(authenticationToken);
-           var token = tokenService.gerarToken((Usuario) authentication.getPrincipal());
-
-           return ResponseEntity.ok(new LoginResponseDTO(token));
-       }
-
+            var token = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+            return ResponseEntity.ok(new LoginResponseDTO(token));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @PostMapping("/registrar")
     public ResponseEntity registrar(@RequestBody @Valid RegistrarDTO dados){
         if(this.repository.findByLogin(dados.login()) != null) return ResponseEntity.badRequest().build();

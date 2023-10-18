@@ -24,12 +24,13 @@ public class cadastroEmpresa {
     @Enumerated(EnumType.STRING)
     private statusCadastro status;
 
+
     public enum statusCadastro {
         PENDENTE,
         APROVADO,
         REJEITADO
     }
-
+    @Enumerated(EnumType.STRING)
     public statusCadastro getStatus() {
         return status;
     }

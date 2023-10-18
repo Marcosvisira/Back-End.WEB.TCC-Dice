@@ -1,6 +1,6 @@
 package br.com.dice.Infra.security;
 
-import br.com.dice.Usuario.Usuario;
+import br.com.dice.Entity.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -17,27 +17,27 @@ public class TokenService {
 
     @Value("${api.security.token.secret}")
     private String secret;
+    private static final String ISSUER = "APIDICE";
     public String gerarToken(Usuario usuario){
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-             String token = JWT.create()
-                    .withIssuer("API Dice")
+            var algorithm = Algorithm.HMAC256(secret);
+             return JWT.create()
+                    .withIssuer(ISSUER)
                     .withSubject(usuario.getLogin())
                     .withExpiresAt(dataExpiracao())
                     .sign(algorithm);
-             return token;
         } catch (JWTCreationException exception){
             throw new RuntimeException("Erro ao gerar token jwt" , exception);
     }
-
 }
-    public String getSubject(String tokenJWT){
+
+    public String getSubject(String token){
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            var algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("API Dice")
+                    .withIssuer(ISSUER)
                     .build()
-                    .verify(tokenJWT)
+                    .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception) {
             throw new RuntimeException("Token JWT inválido ou expirado!");

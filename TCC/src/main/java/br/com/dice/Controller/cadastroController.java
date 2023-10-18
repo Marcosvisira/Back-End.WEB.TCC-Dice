@@ -2,6 +2,7 @@ package br.com.dice.Controller;
 
 import br.com.dice.Entity.cadastroEmpresa;
 import br.com.dice.Records.dadosCadastroEmpresa;
+import br.com.dice.Records.dadosListagemEmpresa;
 import br.com.dice.Repository.empresaRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -79,6 +80,13 @@ public class cadastroController {
         return ResponseEntity.ok(dados);
     }
 
+    @GetMapping("/detalhar/{ID}")
+    public ResponseEntity detalhar(@PathVariable Long ID){
+        var empresa =  repository.getReferenceById(ID);
+
+        return ResponseEntity.ok(new dadosListagemEmpresa(empresa));
+    }
+
     @PutMapping("/atualizar")
     @Transactional
     public ResponseEntity atualizar(@RequestBody @Valid dadosCadastroEmpresa dados) {
@@ -91,7 +99,7 @@ public class cadastroController {
         return ResponseEntity.ok(dados);
     }
 
-    @DeleteMapping("/delete/{ID}")
+    @DeleteMapping("/deletar/{ID}")
     @Transactional
     public ResponseEntity excluir(@PathVariable Long ID){
         repository.deleteById(ID);

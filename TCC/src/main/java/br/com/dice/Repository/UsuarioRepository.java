@@ -1,9 +1,9 @@
 package br.com.dice.Repository;
 
-import br.com.dice.Usuario.Usuario;
+import br.com.dice.Entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, String> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     UserDetails findByLogin(String login);
 }

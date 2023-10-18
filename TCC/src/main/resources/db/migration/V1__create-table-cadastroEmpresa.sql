@@ -14,4 +14,5 @@ create table dadosempresa(
 
     primary key(id)
 
+
 );

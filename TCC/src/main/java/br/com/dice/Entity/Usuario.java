@@ -1,5 +1,6 @@
-package br.com.dice.Usuario;
+package br.com.dice.Entity;
 
+import br.com.dice.Usuario.UsuarioRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -11,9 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "usuarios")
-@Entity(name = "usuario")
+@Entity(name = "Usuario")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
